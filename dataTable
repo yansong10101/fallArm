@@ -1,0 +1,60 @@
+CREATE TABLE `person` (
+  `person_id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_firstname` varchar(50) NOT NULL,
+  `person_lastname` varchar(50) NOT NULL,
+  `person_address` varchar(255) DEFAULT NULL,
+  `person_gender` char(1) DEFAULT NULL,
+  `person_birth` date DEFAULT NULL,
+  PRIMARY KEY (`person_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `patient` (
+  `patient_id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_level` int(11) DEFAULT NULL,
+  `person_id` int(11) NOT NULL,
+  PRIMARY KEY (`patient_id`),
+  KEY `FK_patient` (`person_id`),
+  CONSTRAINT `FK_patient` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `nurse` (
+  `nurse_id` int(11) NOT NULL AUTO_INCREMENT,
+  `nurse_working_hour` int(11) DEFAULT NULL,
+  `person_id` int(11) NOT NULL,
+  PRIMARY KEY (`nurse_id`),
+  KEY `FK_nurse` (`person_id`),
+  CONSTRAINT `FK_nurse` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `viewer` (
+  `viewer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `viewer_email` varchar(50) NOT NULL,
+  `view_phone` varchar(50) NOT NULL,
+  `patient_id` int(11) NOT NULL,
+  `person_id` int(11) NOT NULL,
+  PRIMARY KEY (`viewer_id`),
+  KEY `FK_Patient` (`patient_id`),
+  KEY `FK_viewer` (`person_id`),
+  CONSTRAINT `viewer_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_viewer` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+  
+`user_id` int(11) NOT NULL AUTO_INCREMENT,
+  
+`user_name` varchar(255) NOT NULL,
+  
+`user_password` varchar(255) NOT NULL,
+  
+`person_id` int(11) NOT NULL,
+  
+PRIMARY KEY (`user_id`),
+  
+KEY `FK_user` (`person_id`),
+  
+CONSTRAINT `FK_user` FOREIGN KEY (`person_id`) 
+REFERENCES `person` (`person_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
